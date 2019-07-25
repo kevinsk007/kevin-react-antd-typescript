@@ -1,6 +1,5 @@
 import React from 'react'
 import { ConnectedRouter } from 'connected-react-router'
-import { BrowserRouter } from 'react-router-redux'
 import { Provider } from 'react-redux'
 
 import CoreLayout from '../router'

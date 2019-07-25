@@ -20,8 +20,6 @@ class Login extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    console.log(2222)
-
     this.createCode()
   }
 
@@ -37,23 +35,17 @@ class Login extends React.Component<any, any> {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         // 表单是借用别人的方法
-        // if (this.state.code.toUpperCase() !== values.verification.toUpperCase()) {
-        //   this.props.form.setFields({
-        //     verification: {
-        //       value: values.verification,
-        //       errors: [new Error('验证码错误')],
-        //     },
-        //   })
-        //   return
-        // }
-        const { toLoginIn, loginInfo, history } = this.props
+        if (this.state.code.toUpperCase() !== values.verification.toUpperCase()) {
+          this.props.form.setFields({
+            verification: {
+              value: values.verification,
+              errors: [new Error('验证码错误')],
+            },
+          })
+          return
+        }
+        const { toLoginIn, history } = this.props
         toLoginIn(values.username, values.password, history)
-        console.log(this.props)
-        // if (loginInfo && loginInfo.isLogin) {
-        //   history.push('./home')
-        // } else if (loginInfo && !loginInfo.isLogin) {
-        //   alert(loginInfo.msg)
-        // }
       }
     })
   }

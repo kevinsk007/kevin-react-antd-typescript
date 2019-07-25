@@ -1,13 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import rootReducer from '../redux'
+import createRootReducer from '../redux'
 import { routerMiddleware } from 'connected-react-router'
 import history from '../history'
 import { rootSaga } from '../sagas'
+// import { hot } from 'react-hot-loader'
 
-// export { store, runSaga }
-
-const rootStore = () => {
+export default function configureStore(preloadedState?: any) {
+  // const rootStore = () => {
   const middleware = []
   const sagaMiddleware = createSagaMiddleware()
   const runSaga = initialState => {
@@ -17,7 +17,7 @@ const rootStore = () => {
   middleware.push(routerMiddleware(history))
   middleware.push(sagaMiddleware)
   const store = createStore(
-    rootReducer(history),
+    createRootReducer(history),
     compose(
       applyMiddleware(...middleware),
       window['__REDUX_DEVTOOLS_EXTENSION__'] ? window['__REDUX_DEVTOOLS_EXTENSION__']() : f => f,
@@ -26,6 +26,16 @@ const rootStore = () => {
   // store['runSaga'] = runSaga
   runSaga(rootSaga)
   // const action = type => store.dispatch({ type })
+
+  // Hot reloading
+  if (module['hot']) {
+    // Enable Webpack hot module replacement for reducers
+    module['hot'].accept('../redux', () => {
+      store.replaceReducer(createRootReducer(history))
+    })
+  }
+
   return store
+  // }
 }
-export default rootStore()
+// export default rootStore()

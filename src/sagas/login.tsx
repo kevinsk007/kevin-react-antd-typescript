@@ -1,4 +1,4 @@
-import { take, all, fork, put, call, takeLatest } from 'redux-saga/effects'
+import { take, all, fork, put, call } from 'redux-saga/effects'
 
 import { fetchSmart } from '../utils'
 // import { push } from 'connected-react-router'
@@ -9,7 +9,7 @@ function* watchIsLogin() {
   while (true) {
     //监听登入事件 react yield put push
     const action1 = yield take('TO_LOGIN_IN')
-    const { password, username, history } = action1.payload
+    const { history } = action1.payload
     const res = yield call(fetchSmart, '/mock/products/discounts.json', {
       method: 'GET',
       // body: JSON.stringify({
@@ -26,8 +26,5 @@ function* watchIsLogin() {
 }
 
 export function* loginRootSaga() {
-  yield all([
-    fork(watchIsLogin),
-    // takeLatest('login_success', watchIsLogin),
-  ])
+  yield all([fork(watchIsLogin)])
 }

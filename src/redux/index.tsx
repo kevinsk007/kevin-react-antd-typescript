@@ -1,15 +1,13 @@
 import { combineReducers } from 'redux'
 import login from './login/reducer'
 import { connectRouter } from 'connected-react-router'
-// import { routerReducer } from 'react-router-redux'
-import history from '../history'
-// import search from './search/reducers'
+// import history from '../history'
+import { History } from 'history'
 //合并成根reducer
-export default history =>
+const rootReducer = (history: History) =>
   combineReducers({
     login,
-    // search,
     router: connectRouter(history),
   })
 
-// export { rootReducer }
+export default rootReducer
