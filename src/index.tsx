@@ -1,18 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-// import { createStore, applyMiddleware, compose } from 'redux'
-// import createSagaMiddleware from 'redux-saga'
-// import { rootReducer } from './redux'
-import { Provider } from 'react-redux'
-import { rootSaga } from './sagas'
-import { store, runSaga } from './store'
+import configureStore from './store'
 import './index.scss'
-import Root from './router'
+import AppContainer from './containers'
+import history from './history'
+const store = configureStore()
 
-runSaga(rootSaga)
-ReactDOM.render(
-  <Provider store={store}>
-    <Root />
-  </Provider>,
-  document.getElementById('root'),
-)
+const ENTRY_POINT = document.getElementById('root')
+const render = () => {
+  ReactDOM.render(<AppContainer store={store} history={history} />, ENTRY_POINT)
+}
+
+render()
+if (module['hot']) {
+  // Reload components
+  module['hot'].accept('./containers', () => {
+    render()
+  })
+}

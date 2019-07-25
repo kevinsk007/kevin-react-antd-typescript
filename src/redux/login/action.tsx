@@ -6,12 +6,13 @@ interface BaseAction {
   payload: any
 }
 
-export const toLoginIn = (username: String, password: String) => {
+export const toLoginIn = (username: String, password: String, history: any) => {
   return {
     type: types.TO_LOGIN_IN,
     payload: {
       username: username,
       password: password,
+      history: history,
     },
   }
 }

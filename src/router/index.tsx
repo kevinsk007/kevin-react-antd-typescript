@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Login from '../containers/login'
 import Home from '../containers/home'
 
-import { hot } from 'react-hot-loader'
+// import { hot } from 'react-hot-loader'
 
 class Root extends React.Component<any, any> {
   render() {
@@ -11,7 +11,7 @@ class Root extends React.Component<any, any> {
       <div className="App">
         <Router>
           <Switch>
-            <Route path="/" exact component={Login} />
+            <Route path="/login" exact component={Login} />
             <Route path="/home" exact component={Home} />
             {/* <Route path="/search" component={Search} />
             <Route path="/search_result" component={SearchResult} /> */}
@@ -25,4 +25,4 @@ class Root extends React.Component<any, any> {
   }
 }
 
-export default hot(module)(Root)
+export default Root
