@@ -9,6 +9,8 @@ import { toLoginIn } from '../../redux/login/action'
 @injectionFrom()
 class Login extends React.Component<any, any> {
   private canvas = null
+  private bc = new BroadcastChannel('AlienZHOU')
+
   constructor(props) {
     super(props)
     this.state = {
@@ -18,6 +20,8 @@ class Login extends React.Component<any, any> {
   }
 
   componentDidMount() {
+    console.log(2222)
+
     this.createCode()
   }
 
@@ -25,25 +29,31 @@ class Login extends React.Component<any, any> {
     this.setState({
       focusItem: -1,
     })
+    this.bc.onmessage = function(e) {
+      const data = e.data
+      const text = '[receive] ' + data.msg + ' —— tab ' + data.from
+      console.log('[BroadcastChannel] receive message:', text)
+    }
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         // 表单是借用别人的方法
-        if (this.state.code.toUpperCase() !== values.verification.toUpperCase()) {
-          this.props.form.setFields({
-            verification: {
-              value: values.verification,
-              errors: [new Error('验证码错误')],
-            },
-          })
-          return
-        }
+        // if (this.state.code.toUpperCase() !== values.verification.toUpperCase()) {
+        //   this.props.form.setFields({
+        //     verification: {
+        //       value: values.verification,
+        //       errors: [new Error('验证码错误')],
+        //     },
+        //   })
+        //   return
+        // }
         const { toLoginIn, loginInfo, history } = this.props
-        await toLoginIn(values.username, values.password)
-        if (loginInfo && loginInfo.isLogin) {
-          history.push('./home')
-        } else if (loginInfo && !loginInfo.isLogin) {
-          alert(loginInfo.msg)
-        }
+        toLoginIn(values.username, values.password, history)
+        console.log(this.props)
+        // if (loginInfo && loginInfo.isLogin) {
+        //   history.push('./home')
+        // } else if (loginInfo && !loginInfo.isLogin) {
+        //   alert(loginInfo.msg)
+        // }
       }
     })
   }
@@ -73,6 +83,7 @@ class Login extends React.Component<any, any> {
   render() {
     const { focusItem } = this.state
     const { getFieldDecorator, getFieldError } = this.props.form
+
     return (
       <div className="container-login">
         <div className="background" id="backgroundBox">
@@ -139,7 +150,7 @@ class Login extends React.Component<any, any> {
                       {getFieldDecorator('verification', {
                         rules: [
                           {
-                            validator: this.checkUnitRules,
+                            // validator: this.checkUnitRules,
                           },
                         ],
                       })(
@@ -201,8 +212,8 @@ const mapStateToProps = state => {
 }
 const mapStateToDispatch = dispatch => {
   return {
-    toLoginIn: (username, password) => {
-      dispatch(toLoginIn(username, password))
+    toLoginIn: (username, password, ags) => {
+      dispatch(toLoginIn(username, password, ags))
     },
   }
 }
