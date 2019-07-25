@@ -142,7 +142,7 @@ class Login extends React.Component<any, any> {
                       {getFieldDecorator('verification', {
                         rules: [
                           {
-                            // validator: this.checkUnitRules,
+                            validator: this.checkUnitRules,
                           },
                         ],
                       })(

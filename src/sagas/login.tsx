@@ -17,6 +17,7 @@ function* watchIsLogin() {
       //   password: action1.password,
       // }),
     })
+
     if (res && res.length > 0) {
       yield put({ type: 'login_success', data: res })
       // yield put(push('./home'))
